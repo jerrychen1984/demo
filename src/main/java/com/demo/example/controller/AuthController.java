@@ -4,6 +4,7 @@ import com.demo.example.data.service.AuthService;
 import com.demo.example.security.jwt.JwtAuthenticationRequest;
 import com.demo.example.security.jwt.JwtAuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +40,7 @@ public class AuthController {
         String bearer = request.getHeader(AUTHORIZATION);
         String refreshedToken = authService.refresh(bearer);
         if(refreshedToken == null) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } else {
             return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken));
         }

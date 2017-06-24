@@ -35,6 +35,8 @@ public class AuthServiceImpl implements AuthService {
 
     // Http request header
     private static final String AUTHORIZATION = "Authorization";
+    // Authorization value head
+    private static final String BEARER = "Bearer ";
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -115,13 +117,14 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String refresh(String bearer) {
-        final String authToken = bearer.substring(AUTHORIZATION.length());
+        final String authToken = bearer.substring(BEARER.length());
         final String username = jwtTokenUtils.getUsernameFromToken(authToken);
         final String cachedToken = jwtTokenCache.get(username);
-        if (cachedToken != null){
+        if (cachedToken != null && cachedToken.equals(authToken)){
             String refreshedToken = jwtTokenUtils.refreshToken(authToken);
             if (refreshedToken != null) {
                 jwtTokenCache.put(username, refreshedToken, jwtTokenUtils.getExpirationDateFromToken(refreshedToken));
+                return refreshedToken;
             }
         }
 
