@@ -24,12 +24,19 @@ public class ObjectValidator implements InitializingBean {
 
     public <T> void check(T object) throws InvalidParamsException {
 
-        Set<ConstraintViolation<T>> constraintViolations =
+        Set<ConstraintViolation<T>> results =
                 validator.validate(object);
 
-        if (!constraintViolations.isEmpty()) {
-            Iterator<ConstraintViolation<T>> iterator = constraintViolations.iterator();
-            throw new InvalidParamsException(iterator.next().getMessage());
+        StringBuffer sb = new StringBuffer();
+        Iterator<ConstraintViolation<T>> iterator = results.iterator();
+        while (iterator.hasNext()) {
+            ConstraintViolation<T> violation = iterator.next();
+            sb.append(String.format("%s%s", violation.getPropertyPath(), violation.getMessage()));
+            sb.append(" ");
+        }
+
+        if (!results.isEmpty()) {
+            throw new InvalidParamsException(sb.toString());
         }
     }
 
