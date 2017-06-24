@@ -15,21 +15,18 @@ public class User {
 
     @Name
     @ColDefine(width = 64, notNull = true)
-    private String username;
+    private String username; // email
 
     @Column
     @ColDefine(width = 64, notNull = true)
     private String password;
 
-    @Column
+    @Column("display_name")
     @ColDefine(width = 64)
-    private String email;
+    private String displayName;
 
     @Column("gmt_pwd_reset")
     private Date lastPasswordResetDate;
-
 }
-
-
 
 

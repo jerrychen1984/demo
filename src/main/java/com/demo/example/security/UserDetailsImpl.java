@@ -13,24 +13,26 @@ public class UserDetailsImpl implements UserDetails {
     private final Long id;
 
     private final String username;
+
     private final String password;
 
-    private final String email;
+    private final String displayName;
+
+    private final Date lastPasswordResetDate;
 
     private final Collection<? extends GrantedAuthority> authorities;
-    private final Date lastPasswordResetDate;
 
     public UserDetailsImpl(
             Long id,
             String username,
             String password,
-            String email,
-            Collection<? extends GrantedAuthority> authorities,
-            Date lastPasswordResetDate) {
+            String displayName,
+            Date lastPasswordResetDate,
+            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.email = email;
+        this.displayName = displayName;
         this.authorities = authorities;
         this.lastPasswordResetDate = lastPasswordResetDate;
     }

@@ -18,9 +18,9 @@ public final class UserDetailsFactory {
                 user.getId(),
                 user.getUsername(),
                 user.getPassword(),
-                user.getEmail(),
-                mapToGrantedAuthorities(authorities),
-                user.getLastPasswordResetDate()
+                user.getDisplayName(),
+                user.getLastPasswordResetDate(),
+                mapToGrantedAuthorities(authorities)
         );
     }
 

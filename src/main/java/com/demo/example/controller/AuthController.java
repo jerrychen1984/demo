@@ -1,7 +1,5 @@
 package com.demo.example.controller;
 
-import com.demo.example.controller.ro.UserRegistry;
-import com.demo.example.data.po.User;
 import com.demo.example.data.service.AuthService;
 import com.demo.example.security.jwt.JwtAuthenticationRequest;
 import com.demo.example.security.jwt.JwtAuthenticationResponse;
@@ -45,14 +43,6 @@ public class AuthController {
         } else {
             return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken));
         }
-    }
-
-    @RequestMapping(value = "${jwt.route.authentication.register}"
-            , method = RequestMethod.POST
-            , produces={"application/json;charset=UTF-8"})
-    @ResponseBody
-    public User registerUser(@RequestBody UserRegistry registry) throws AuthenticationException{
-        return authService.register(registry);
     }
 
 }
