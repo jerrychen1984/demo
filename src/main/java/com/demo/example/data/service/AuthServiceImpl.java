@@ -1,5 +1,6 @@
 package com.demo.example.data.service;
 
+import com.demo.example.data.cache.JwtTokenCache;
 import com.demo.example.data.service.exception.InvalidParamsException;
 import com.demo.example.controller.ro.UserRegistry;
 import com.demo.example.data.po.Authority;
@@ -45,6 +46,8 @@ public class AuthServiceImpl implements AuthService {
     private Repository repository;
     @Autowired
     private ObjectValidator objectValidator;
+    @Autowired
+    private JwtTokenCache jwtTokenCache;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -96,8 +99,18 @@ public class AuthServiceImpl implements AuthService {
         final Authentication authentication = authenticationManager.authenticate(upToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        String token = jwtTokenCache.get(username);
+        if (!StringUtils.isEmpty(token)) {
+            return token;
+        }
+
         final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        return jwtTokenUtils.generateToken(userDetails);
+        token = jwtTokenUtils.generateToken(userDetails);
+        if (token != null) {
+            jwtTokenCache.put(username, token);
+        }
+
+        return token;
     }
 
     @Override
