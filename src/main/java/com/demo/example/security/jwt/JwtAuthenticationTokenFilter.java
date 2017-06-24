@@ -1,5 +1,6 @@
 package com.demo.example.security.jwt;
 
+import com.demo.example.data.cache.JwtTokenCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,12 +24,10 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     private static final String AUTHORIZATION = "Authorization";
     // Authorization value head
     private static final String BEARER = "Bearer ";
-
-    @Autowired
-    private UserDetailsService userDetailsService;
-
     @Autowired
     private JwtTokenUtils jwtTokenUtils;
+    @Autowired
+    private JwtTokenCache jwtTokenCache;
 
     @Override
     protected void doFilterInternal(
@@ -43,15 +42,10 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             logger.info("Authentication checking user: " + username);
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                // 如果我们足够相信token中的数据，也就是我们足够相信签名token的secret的机制足够好
-                // 这种情况下，我们可以不用再查询数据库，而直接采用token中的数据
-                // 暂时，我们还是通过Spring Security的 @UserDetailsService 进行了数据查询
-                // 但简单验证的话，你可以采用直接验证token是否合法来避免昂贵的数据查询
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-
-                if (jwtTokenUtils.validateToken(authToken, userDetails)) {
+                final String cachedToken = jwtTokenCache.get(username);
+                if (cachedToken != null && cachedToken.equals(authToken)) {
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities());
+                            username, null, jwtTokenUtils.getAuthoritiesFromToken(cachedToken));
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     logger.info("Authentication user: " + username + " authenticated, setting security context");
                     SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -62,3 +56,4 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         chain.doFilter(request, response);
     }
 }
+

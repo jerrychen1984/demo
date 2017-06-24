@@ -7,6 +7,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenCache extends AbstractRedisCache<String, String> {
 
+    public JwtTokenCache() {
+        super("jwt-token");
+    }
+
     @Override
     protected RedisSerializer<String> keySerializer() {
         return new StringRedisSerializer();

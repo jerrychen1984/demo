@@ -107,7 +107,7 @@ public class AuthServiceImpl implements AuthService {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         token = jwtTokenUtils.generateToken(userDetails);
         if (token != null) {
-            jwtTokenCache.put(username, token);
+            jwtTokenCache.put(username, token, jwtTokenUtils.getExpirationDateFromToken(token));
         }
 
         return token;
@@ -115,11 +115,14 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String refresh(String bearer) {
-        final String token = bearer.substring(AUTHORIZATION.length());
-        String username = jwtTokenUtils.getUsernameFromToken(token);
-        UserDetailsImpl user = (UserDetailsImpl) userDetailsService.loadUserByUsername(username);
-        if (jwtTokenUtils.canTokenBeRefreshed(token, user.getLastPasswordResetDate())){
-            return jwtTokenUtils.refreshToken(token);
+        final String authToken = bearer.substring(AUTHORIZATION.length());
+        final String username = jwtTokenUtils.getUsernameFromToken(authToken);
+        final String cachedToken = jwtTokenCache.get(username);
+        if (cachedToken != null){
+            String refreshedToken = jwtTokenUtils.refreshToken(authToken);
+            if (refreshedToken != null) {
+                jwtTokenCache.put(username, refreshedToken, jwtTokenUtils.getExpirationDateFromToken(refreshedToken));
+            }
         }
 
         return null;
