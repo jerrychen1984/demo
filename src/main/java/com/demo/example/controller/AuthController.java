@@ -1,6 +1,8 @@
 package com.demo.example.controller;
 
+import com.demo.example.controller.vo.ResponseData;
 import com.demo.example.data.service.AuthService;
+import com.demo.example.data.service.exception.EmailWasNotVerifiedException;
 import com.demo.example.security.jwt.JwtAuthenticationRequest;
 import com.demo.example.security.jwt.JwtAuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,25 +23,30 @@ public class AuthController {
 
     @RequestMapping(value = "${jwt.route.authentication.path}"
             , method = RequestMethod.POST
-            , produces={"application/json;charset=UTF-8"})
+            , produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public ResponseEntity<?> createToken(@RequestBody JwtAuthenticationRequest authenticationRequest)
-            throws AuthenticationException{
-        final String token = authService.login(authenticationRequest.getUsername()
-                , authenticationRequest.getPassword());
+    public ResponseData<?> createToken(@RequestBody JwtAuthenticationRequest authenticationRequest) {
 
-        return ResponseEntity.ok(new JwtAuthenticationResponse(token));
+        try {
+            final String token = authService.login(authenticationRequest.getUsername()
+                    , authenticationRequest.getPassword());
+            return ResponseData.success(new JwtAuthenticationResponse(token));
+
+        } catch (EmailWasNotVerifiedException e) {
+            return ResponseData.error(e.getMessage());
+        }
+
     }
 
     @RequestMapping(value = "${jwt.route.authentication.refresh}"
             , method = RequestMethod.GET
-            , produces={"application/json;charset=UTF-8"})
+            , produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public ResponseEntity<?> refreshToken(
-            HttpServletRequest request) throws AuthenticationException{
+            HttpServletRequest request) throws AuthenticationException {
         String bearer = request.getHeader(AUTHORIZATION);
         String refreshedToken = authService.refresh(bearer);
-        if(refreshedToken == null) {
+        if (refreshedToken == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } else {
             return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken));

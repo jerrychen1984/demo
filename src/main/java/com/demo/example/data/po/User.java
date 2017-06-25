@@ -27,6 +27,9 @@ public class User {
 
     @Column("gmt_pwd_reset")
     private Date lastPasswordResetDate;
+
+    @Column("email_verified")
+    private boolean emailVerified;
 }
 
 

@@ -59,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js"
                 ).permitAll()
                 .antMatchers("/auth/token").permitAll()
-                .antMatchers("/user/register").permitAll()
+                .antMatchers("/user/register", "/user/verify-email", "/user/resend-verify-email").permitAll()
                 .anyRequest().authenticated();
 
         // 添加JWT filter
