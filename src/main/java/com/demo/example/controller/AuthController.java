@@ -5,6 +5,7 @@ import com.demo.example.data.service.AuthService;
 import com.demo.example.data.service.exception.EmailWasNotVerifiedException;
 import com.demo.example.security.jwt.JwtAuthenticationRequest;
 import com.demo.example.security.jwt.JwtAuthenticationResponse;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Api("访问令牌API")
 @RestController
 public class AuthController {
     // Http request header
@@ -25,7 +27,11 @@ public class AuthController {
             , method = RequestMethod.POST
             , produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public ResponseData<?> createToken(@RequestBody JwtAuthenticationRequest authenticationRequest) {
+    @ApiOperation(value = "换取访问令牌")
+    @ApiResponses(value = {
+            @ApiResponse(code = 401, message = "用户名或密码错误")
+    })
+    public ResponseData<?> createToken(@ApiParam @RequestBody JwtAuthenticationRequest authenticationRequest) {
 
         try {
             final String token = authService.login(authenticationRequest.getUsername()
@@ -42,6 +48,11 @@ public class AuthController {
             , method = RequestMethod.GET
             , produces = {"application/json;charset=UTF-8"})
     @ResponseBody
+    @ApiOperation(value = "刷新访问令牌")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "ok"),
+            @ApiResponse(code = 401, message = "token无效")
+    })
     public ResponseEntity<?> refreshToken(
             HttpServletRequest request) throws AuthenticationException {
         String bearer = request.getHeader(AUTHORIZATION);

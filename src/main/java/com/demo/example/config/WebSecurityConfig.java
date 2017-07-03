@@ -49,18 +49,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         security
                 .csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        security.authorizeRequests().antMatchers("/v2/api-docs",//swagger api json
+                "/swagger-resources",//用来获取api-docs的URI
+                "/swagger-resources/**",//用来获取支持的动作
+                "/webjars/**",
+                "/swagger-ui.html").permitAll();
+
+        security.authorizeRequests()
                 .antMatchers(
                         HttpMethod.GET,
-                        "/",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js"
+                        "/"
                 ).permitAll()
                 .antMatchers("/auth/token").permitAll()
-                .antMatchers("/user/register", "/user/verify-email", "/user/resend-verify-email").permitAll()
+                .antMatchers("/user/register"
+                        , "/user/verify-email"
+                        , "/user/resend-verify-email").permitAll()
                 .anyRequest().authenticated();
+
 
         // 添加JWT filter
         security.addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
