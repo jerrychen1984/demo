@@ -14,6 +14,7 @@ import com.demo.example.data.service.exception.UserNameExistsException;
 import com.demo.example.utils.CryptoUtils;
 import com.demo.example.utils.JSONUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
+import io.swagger.annotations.Api;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.FieldFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.TimeUnit;
 
+@Api(value = "用户注册API", tags = "注册", description = "用户注册服务")
 @RestController
 @RequestMapping("/user")
 public class UserController {

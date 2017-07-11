@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Api("访问令牌API")
+@Api(value = "访问令牌API", tags = "认证", description = "用户认证服务")
 @RestController
 public class AuthController {
     // Http request header
