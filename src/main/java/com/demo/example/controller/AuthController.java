@@ -1,6 +1,5 @@
 package com.demo.example.controller;
 
-import com.demo.example.controller.vo.ResponseData;
 import com.demo.example.data.service.AuthService;
 import com.demo.example.data.service.exception.EmailWasNotVerifiedException;
 import com.demo.example.security.jwt.JwtAuthenticationRequest;
@@ -29,28 +28,29 @@ public class AuthController {
     @ResponseBody
     @ApiOperation(value = "换取访问令牌")
     @ApiResponses(value = {
-            @ApiResponse(code = 401, message = "用户名或密码错误")
+            @ApiResponse(code = 401, message = "用户名或密码错误"),
+            @ApiResponse(code = 200, message = "Token", response = JwtAuthenticationResponse.class)
     })
-    public ResponseData<?> createToken(@ApiParam @RequestBody JwtAuthenticationRequest authenticationRequest) {
+    public ResponseEntity<?> createToken(@ApiParam @RequestBody JwtAuthenticationRequest request) {
 
         try {
-            final String token = authService.login(authenticationRequest.getUsername()
-                    , authenticationRequest.getPassword());
-            return ResponseData.success(new JwtAuthenticationResponse(token));
+            final String token = authService.login(request.getUsername()
+                    , request.getPassword());
+            return ResponseEntity.ok(new JwtAuthenticationResponse(true,null, token));
 
         } catch (EmailWasNotVerifiedException e) {
-            return ResponseData.error(e.getMessage());
+            return ResponseEntity.ok(new JwtAuthenticationResponse(false, "邮件尚未验证", null));
         }
 
     }
 
     @RequestMapping(value = "${jwt.route.authentication.refresh}"
-            , method = RequestMethod.GET
+            , method = RequestMethod.POST
             , produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     @ApiOperation(value = "刷新访问令牌")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "ok"),
+            @ApiResponse(code = 200, message = "Token", response = JwtAuthenticationResponse.class),
             @ApiResponse(code = 401, message = "token无效")
     })
     public ResponseEntity<?> refreshToken(
@@ -60,7 +60,7 @@ public class AuthController {
         if (refreshedToken == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } else {
-            return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken));
+            return ResponseEntity.ok(new JwtAuthenticationResponse(true, null, refreshedToken));
         }
     }
 
