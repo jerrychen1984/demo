@@ -1,6 +1,7 @@
 package com.demo.example.controller.vo.editor;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -15,33 +16,21 @@ import java.util.List;
 @ApiModel
 public class PageVO {
 
-    /**
-     * 页面名称
-     */
+    @ApiModelProperty(value = "页面名称")
     private String name;
 
-    /**
-     * 页面状态 1:保存未提交 2:提交
-     */
+    @ApiModelProperty(value = "页面状态 1:保存未提交 2:提交 3:下线")
     private int status;
 
-    /**
-     * 创建人
-     */
+    @ApiModelProperty(value = "创建人")
     private String userId;
 
-    /**
-     * 间隔线样式
-     */
+    @ApiModelProperty(value = "间隔线样式")
     private String intervalStyle;
 
-    /**
-     * 字体
-     */
+    @ApiModelProperty(value = "字体")
     private String font;
 
-    /**
-     * 组件集合
-     */
+    @ApiModelProperty(value = "组件集合")
     private List<ModelVO> modelVOs;
 }

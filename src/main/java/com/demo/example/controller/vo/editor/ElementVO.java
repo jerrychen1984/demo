@@ -1,5 +1,7 @@
 package com.demo.example.controller.vo.editor;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -9,45 +11,30 @@ import lombok.Data;
  * @since 17/7/15
  */
 @Data
+@ApiModel
 public class ElementVO {
 
-    /**
-     * 图片地址
-     */
+    @ApiModelProperty(value = "图片地址")
     private String pic;
 
-    /**
-     * 图片高
-     */
+    @ApiModelProperty(value = "图片高")
     private int height;
 
-    /**
-     * 图片宽
-     */
+    @ApiModelProperty(value = "图片宽")
     private int width;
 
-    /**
-     * 标题
-     */
+    @ApiModelProperty(value = "标题")
     private String title;
 
-    /**
-     * 跳转地址
-     */
+    @ApiModelProperty(value = "跳转地址")
     private String jumpUrl;
 
-    /**
-     * 价格
-     */
+    @ApiModelProperty(value = "价格")
     private long price;
 
-    /**
-     * 价格文案
-     */
+    @ApiModelProperty(value = "价格文案")
     private String priceText;
 
-    /**
-     * 定位
-     */
+    @ApiModelProperty(value = "定位")
     private String position;
 }
