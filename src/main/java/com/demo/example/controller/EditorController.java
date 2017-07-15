@@ -14,7 +14,7 @@ import javax.annotation.Resource;
  * @author xuxiang
  * @since 17/7/11
  */
-@Api("编辑器")
+@Api(value = "编辑器", tags = "编辑器", description = "编辑器服务")
 @RestController
 @RequestMapping("/editor")
 public class EditorController {
