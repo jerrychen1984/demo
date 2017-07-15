@@ -1,6 +1,6 @@
 package com.demo.example.data.service;
 
-import com.demo.example.controller.ro.editor.Page;
+import com.demo.example.controller.ro.editor.PageRO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +15,7 @@ public class EditorServiceImpl implements EditorService{
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean createPage(Page page) {
+    public boolean createPage(PageRO pageRO) {
 
         return false;
     }

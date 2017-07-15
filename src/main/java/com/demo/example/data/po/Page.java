@@ -9,7 +9,7 @@ import org.nutz.dao.entity.annotation.Table;
 import java.util.List;
 
 /**
- * Page
+ * PageVO
  *
  * @author xuxiang
  * @since 17/7/15

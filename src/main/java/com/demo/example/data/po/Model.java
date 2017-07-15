@@ -8,7 +8,7 @@ import org.nutz.dao.entity.annotation.Id;
 import java.util.List;
 
 /**
- * Model
+ * ModelVO
  *
  * @author xuxiang
  * @since 17/7/15

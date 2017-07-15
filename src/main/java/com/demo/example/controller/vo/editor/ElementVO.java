@@ -1,15 +1,15 @@
-package com.demo.example.controller.ro.editor;
+package com.demo.example.controller.vo.editor;
 
 import lombok.Data;
 
 /**
- * Element
+ * ElementVO
  *
  * @author xuxiang
  * @since 17/7/15
  */
 @Data
-public class Element {
+public class ElementVO {
 
     /**
      * 图片地址

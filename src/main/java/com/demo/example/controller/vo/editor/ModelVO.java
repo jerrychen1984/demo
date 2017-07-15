@@ -5,13 +5,13 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * Model
+ * ModelVO
  *
  * @author xuxiang
  * @since 17/7/15
  */
 @Data
-public class Model {
+public class ModelVO {
 
     /**
      * 组件名称
@@ -52,7 +52,7 @@ public class Model {
     /**
      * 元素集合
      */
-    private List<Element> elements;
+    private List<ElementVO> elementVOs;
 
     /**
      * 排序字段

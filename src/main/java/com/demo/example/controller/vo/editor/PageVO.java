@@ -1,17 +1,19 @@
-package com.demo.example.controller.ro.editor;
+package com.demo.example.controller.vo.editor;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.util.List;
 
 /**
- * Page
+ * PageVO
  *
  * @author xuxiang
  * @since 17/7/15
  */
 @Data
-public class Page {
+@ApiModel
+public class PageVO {
 
     /**
      * 页面名称
@@ -19,7 +21,7 @@ public class Page {
     private String name;
 
     /**
-     * 页面状态 1:保存未提交 2:提交 3:下线
+     * 页面状态 1:保存未提交 2:提交
      */
     private int status;
 
@@ -41,5 +43,5 @@ public class Page {
     /**
      * 组件集合
      */
-    private List<Model> models;
+    private List<ModelVO> modelVOs;
 }

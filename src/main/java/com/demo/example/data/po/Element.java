@@ -6,7 +6,7 @@ import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
 
 /**
- * Element
+ * ElementVO
  *
  * @author xuxiang
  * @since 17/7/15

@@ -1,17 +1,17 @@
-package com.demo.example.controller.vo.editor;
+package com.demo.example.controller.ro.editor;
 
 import lombok.Data;
 
 import java.util.List;
 
 /**
- * Page
+ * PageVO
  *
  * @author xuxiang
  * @since 17/7/15
  */
 @Data
-public class Page {
+public class PageRO {
 
     /**
      * 页面名称
@@ -19,7 +19,7 @@ public class Page {
     private String name;
 
     /**
-     * 页面状态 1:保存未提交 2:提交
+     * 页面状态 1:保存未提交 2:提交 3:下线
      */
     private int status;
 
@@ -41,5 +41,5 @@ public class Page {
     /**
      * 组件集合
      */
-    private List<Model> models;
+    private List<ModelRO> modelROs;
 }

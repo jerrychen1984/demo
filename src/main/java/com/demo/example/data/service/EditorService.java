@@ -1,6 +1,6 @@
 package com.demo.example.data.service;
 
-import com.demo.example.controller.ro.editor.Page;
+import com.demo.example.controller.ro.editor.PageRO;
 
 /**
  * EditorService
@@ -10,5 +10,5 @@ import com.demo.example.controller.ro.editor.Page;
  */
 public interface EditorService {
 
-    boolean createPage(Page page);
+    boolean createPage(PageRO pageRO);
 }
