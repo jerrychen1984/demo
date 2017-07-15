@@ -2,13 +2,11 @@ package com.demo.example.data.service;
 
 import com.demo.example.data.cache.JwtTokenCache;
 import com.demo.example.data.service.exception.*;
-import com.demo.example.controller.ro.UserRegistry;
+import com.demo.example.controller.ro.UserRegistryRO;
 import com.demo.example.data.po.Authority;
 import com.demo.example.data.po.InviteCode;
 import com.demo.example.data.po.User;
 import com.demo.example.data.repository.Repository;
-import com.demo.example.security.UserDetailsFactory;
-import com.demo.example.security.UserDetailsImpl;
 import com.demo.example.security.jwt.JwtTokenUtils;
 import com.demo.example.utils.ObjectValidator;
 import org.nutz.dao.Cnd;
@@ -20,7 +18,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -55,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void register(UserRegistry registry) throws UserNameExistsException
+    public void register(UserRegistryRO registry) throws UserNameExistsException
             , InviteCodeNotFoundException
             , InviteCodeWasUsedException
             , InvalidParamsException {

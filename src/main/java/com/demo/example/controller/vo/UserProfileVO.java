@@ -3,7 +3,7 @@ package com.demo.example.controller.vo;
 import lombok.Data;
 
 @Data
-public class UserProfile {
+public class UserProfileVO {
 
     private Long id;
 
