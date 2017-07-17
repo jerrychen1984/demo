@@ -2,6 +2,7 @@ package com.demo.example.controller;
 
 import com.demo.example.controller.misc.EmailVerifyToken;
 import com.demo.example.controller.ro.UserRegistryRO;
+import com.demo.example.controller.vo.UserInfoVO;
 import com.demo.example.controller.vo.UserRegistryVO;
 import com.demo.example.controller.vo.MailVerifyResendVO;
 import com.demo.example.controller.vo.MailVerifyVO;
@@ -20,6 +21,10 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.FieldFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.TimeUnit;
@@ -37,6 +42,36 @@ public class UserController {
     private EmailService emailService;
     @Value("${email.verify.url}")
     private String emailVerifyUrl;
+
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @RequestMapping(value = "/me"
+            , method = RequestMethod.POST
+            , produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    @ApiOperation(value = "获取当前用户信息")
+    @ApiResponses(value = {
+            @ApiResponse(code = 401, message = "验证错误"),
+            @ApiResponse(code = 404, message = "用户不存在"),
+            @ApiResponse(code = 200, message = "用户信息", response = UserInfoVO.class)
+    })
+    public ResponseEntity<?> getUserInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // email
+        String username = (String) authentication.getPrincipal();
+        User user = repository.fetch(User.class, Cnd.where("username", "=", username));
+        if (user != null) {
+            UserInfoVO userInfo = new UserInfoVO();
+            userInfo.setId(user.getId());
+            userInfo.setEmail(user.getUsername());
+            userInfo.setEmailVerified(user.isEmailVerified());
+            userInfo.setDisplayName(user.getDisplayName());
+            return ResponseEntity.ok(userInfo);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
 
     @RequestMapping(value = "/register"
             , method = RequestMethod.POST

@@ -100,9 +100,9 @@ public class AuthServiceImpl implements AuthService {
         final Authentication authentication = authenticationManager.authenticate(upToken);
 
         final User user = repository.fetch(User.class, Cnd.where("username", "=", username));
-        if (!user.isEmailVerified()) {
-            throw new EmailWasNotVerifiedException();
-        }
+//        if (!user.isEmailVerified()) {
+//            throw new EmailWasNotVerifiedException();
+//        }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
