@@ -1,10 +1,7 @@
 package com.demo.example.data.po;
 
 import lombok.Data;
-import org.nutz.dao.entity.annotation.ColDefine;
-import org.nutz.dao.entity.annotation.Column;
-import org.nutz.dao.entity.annotation.Id;
-import org.nutz.dao.entity.annotation.Table;
+import org.nutz.dao.entity.annotation.*;
 
 import java.util.List;
 
@@ -16,6 +13,9 @@ import java.util.List;
  */
 @Data
 @Table("t_page")
+@TableIndexes(
+        @Index(name = "idx_user", fields = {"userId"})
+)
 public class Page {
     @Id
     private Long id;
@@ -28,7 +28,7 @@ public class Page {
     private String name;
 
     /**
-     * 页面状态 1:保存未提交 2:提交
+     * 页面状态 -1:被删除 1:保存未提交 2:提交
      */
     @Column
     private int status;
@@ -53,4 +53,7 @@ public class Page {
     @Column
     @ColDefine(width = 64)
     private String font;
+
+    @Many(target = Model.class, field = "id")
+    private List<Model> models;
 }

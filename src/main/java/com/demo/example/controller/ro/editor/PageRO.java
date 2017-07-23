@@ -16,11 +16,14 @@ import java.util.List;
 @ApiModel
 public class PageRO {
 
+    @ApiModelProperty(value = "页面id")
+    private String pageId;
+
     @ApiModelProperty(value = "页面名称")
     private String name;
 
     @ApiModelProperty(value = "页面状态 1:保存未提交 2:提交 3:下线")
-    private int status;
+    private String status;
 
     @ApiModelProperty(value = "创建人")
     private String userId;

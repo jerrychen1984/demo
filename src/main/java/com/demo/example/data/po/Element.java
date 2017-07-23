@@ -20,6 +20,9 @@ public class Element {
     @Column("model_id")
     private Long modelId;
 
+    @Column("page_id")
+    private Long pageId;
+
     /**
      * 图片地址
      */
@@ -72,4 +75,10 @@ public class Element {
     @Column
     @ColDefine(width = 200, notNull = true)
     private String position;
+
+    /**
+     * 状态 -1:被删除 1:上线 2:隐藏
+     */
+    @Column
+    private int status;
 }

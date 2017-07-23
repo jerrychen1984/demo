@@ -14,6 +14,9 @@ import lombok.Data;
 @ApiModel
 public class ElementVO {
 
+    @ApiModelProperty(value = "元素id")
+    private String elementId;
+
     @ApiModelProperty(value = "图片地址")
     private String pic;
 

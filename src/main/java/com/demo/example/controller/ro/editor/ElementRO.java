@@ -14,23 +14,26 @@ import lombok.Data;
 @ApiModel
 public class ElementRO {
 
+    @ApiModelProperty(value = "元素id")
+    private String elementId;
+
     @ApiModelProperty(value = "图片地址")
     private String pic;
 
     @ApiModelProperty(value = "图片高")
-    private int height;
+    private String height;
 
     @ApiModelProperty(value = "图片宽")
-    private int width;
+    private String width;
 
-    @ApiModelProperty(value = "标题")
+    @ApiModelProperty(value = "标题", example = "")
     private String title;
 
     @ApiModelProperty(value = "跳转地址")
     private String jumpUrl;
 
     @ApiModelProperty(value = "价格")
-    private long price;
+    private String price;
 
     @ApiModelProperty(value = "价格文案")
     private String priceText;

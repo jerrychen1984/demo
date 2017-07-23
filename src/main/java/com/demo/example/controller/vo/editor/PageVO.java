@@ -16,6 +16,9 @@ import java.util.List;
 @ApiModel
 public class PageVO {
 
+    @ApiModelProperty(value = "页面id")
+    private String pageId;
+
     @ApiModelProperty(value = "页面名称")
     private String name;
 

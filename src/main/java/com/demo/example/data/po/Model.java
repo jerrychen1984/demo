@@ -4,6 +4,7 @@ import lombok.Data;
 import org.nutz.dao.entity.annotation.ColDefine;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
+import org.nutz.dao.entity.annotation.Many;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class Model {
 
     /**
      * 组件类型
+     *
      * @see com.demo.example.controller.enums.ModelType
      */
     @Column
@@ -64,8 +66,16 @@ public class Model {
     @ColDefine(width = 1000, notNull = true)
     private String text;
 
+    @Column("title_status")
+    @ColDefine(width = 1000, notNull = true)
+    private String titleStatus;
+
+    @Column("title_icon")
+    @ColDefine(width = 1000, notNull = true)
+    private String titleIcon;
+
     /**
-     * 状态 1:上线 2:隐藏
+     * 状态 -1:被删除 1:上线 2:隐藏
      */
     @Column
     private int status;
@@ -75,4 +85,7 @@ public class Model {
      */
     @Column
     private int order;
+
+    @Many(target = Element.class, field = "page_id")
+    private List<Element> elements;
 }

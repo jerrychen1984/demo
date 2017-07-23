@@ -16,34 +16,29 @@ import java.util.List;
 @ApiModel
 public class ModelRO {
 
+    @ApiModelProperty(value = "组件id")
+    private String modelId;
+
     @ApiModelProperty(value = "组件名称")
     private String name;
-
     /**
-     *
      * @see com.demo.example.controller.enums.ModelType
      */
     @ApiModelProperty(value = "组件类型")
-    private int type;
+    private String type;
 
-    @ApiModelProperty(value = "标题样式")
-    private String titleStyle;
-
-    @ApiModelProperty(value = "主标题")
-    private String mainTitle;
-
-    @ApiModelProperty(value = "副标题")
-    private String subTitle;
+    @ApiModelProperty(value = "组件标题")
+    private ModelTitleRO titleRO;
 
     @ApiModelProperty(value = "正文文本")
     private String text;
 
     @ApiModelProperty(value = "状态 1:上线 2:隐藏")
-    private int status;
+    private String status;
 
     @ApiModelProperty(value = "元素集合")
     private List<ElementRO> elementROs;
 
     @ApiModelProperty(value = "排序字段")
-    private int order;
+    private String order;
 }

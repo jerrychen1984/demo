@@ -16,6 +16,9 @@ import java.util.List;
 @ApiModel
 public class ModelVO {
 
+    @ApiModelProperty(value = "组件id")
+    private String modelId;
+
     @ApiModelProperty(value = "组件名称")
     private String name;
 
@@ -26,14 +29,8 @@ public class ModelVO {
     @ApiModelProperty(value = "组件类型")
     private int type;
 
-    @ApiModelProperty(value = "标题样式")
-    private String titleStyle;
-
-    @ApiModelProperty(value = "主标题")
-    private String mainTitle;
-
-    @ApiModelProperty(value = "副标题")
-    private String subTitle;
+    @ApiModelProperty(value = "组件标题")
+    private ModelTitleVO modelTitleVO;
 
     @ApiModelProperty(value = "正文文本")
     private String text;
