@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @Table("t_pages")
 @TableIndexes(
-        @Index(name = "idx_user", fields = {"userId"})
+        @Index(name = "idx_user", unique = false, fields = {"userId"})
 )
 public class Page {
     @Id
