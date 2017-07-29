@@ -66,8 +66,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/register"
                         , "/user/verify-email"
                         , "/user/resend-verify-email").permitAll()
+                .antMatchers("/editor/**").permitAll()
                 .anyRequest().authenticated();
-
 
         // 添加JWT filter
         security.addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
