@@ -17,7 +17,9 @@ import java.util.List;
         @Index(name = "idx_user", unique = false, fields = {"userId"})
 )
 public class Page {
-    @Id
+
+    @Column("pageId")
+    @Id()
     private Long id;
 
     /**

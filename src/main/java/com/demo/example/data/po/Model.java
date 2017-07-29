@@ -88,6 +88,6 @@ public class Model {
     @Column("show_order")
     private Integer showOrder = 0;
 
-    @Many(target = Element.class, field = "modelId")
+    @Many(target = Element.class, field = "modelId", key = "id")
     private List<Element> elements;
 }
