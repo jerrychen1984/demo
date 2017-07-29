@@ -29,7 +29,7 @@ public class Element {
      * 图片地址
      */
     @Column
-    @ColDefine(width = 255, notNull = true)
+    @ColDefine(width = 255)
     private String pic;
 
     /**
@@ -48,14 +48,14 @@ public class Element {
      * 标题
      */
     @Column
-    @ColDefine(width = 512, notNull = true)
+    @ColDefine(width = 512)
     private String title;
 
     /**
      * 跳转地址
      */
     @Column("jump_url")
-    @ColDefine(width = 255, notNull = true)
+    @ColDefine(width = 255)
     private String jumpUrl;
 
     /**
@@ -68,14 +68,14 @@ public class Element {
      * 价格文案
      */
     @Column("price_text")
-    @ColDefine(width = 255, notNull = true)
+    @ColDefine(width = 255)
     private String priceText;
 
     /**
      * 定位
      */
     @Column
-    @ColDefine(width = 255, notNull = true)
+    @ColDefine(width = 255)
     private String position;
 
     /**

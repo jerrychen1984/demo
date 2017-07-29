@@ -28,7 +28,7 @@ public class PageOperateResultVO {
 
     @ApiModelProperty(value = "错误信息"
             , dataType = "string", example = "成功")
-    private String error = "";
+    private String message = "";
 
     public static PageOperateResultVO success() {
         return new PageOperateResultVO(SUCCESS, "创建成功");

@@ -25,7 +25,7 @@ public class Model {
      * 组件名称
      */
     @Column
-    @ColDefine(width = 64, notNull = true)
+    @ColDefine(width = 64)
     private String name;
 
     /**
@@ -40,14 +40,14 @@ public class Model {
      * 标题样式
      */
     @Column("title_style")
-    @ColDefine(width = 64, notNull = true)
+    @ColDefine(width = 64)
     private String titleStyle;
 
     /**
      * 主标题
      */
     @Column("main_title")
-    @ColDefine(width = 512, notNull = true)
+    @ColDefine(width = 512)
     private String mainTitle;
 
     /**
@@ -61,15 +61,15 @@ public class Model {
      * 正文文本
      */
     @Column
-    @ColDefine(width = 1000, notNull = true)
+    @ColDefine(width = 1000)
     private String text;
 
     @Column("title_status")
-    @ColDefine(width = 255, notNull = true)
+    @ColDefine(width = 255)
     private String titleStatus;
 
     @Column("title_icon")
-    @ColDefine(width = 255, notNull = true)
+    @ColDefine(width = 255)
     private String titleIcon;
 
     /**
