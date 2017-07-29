@@ -72,6 +72,10 @@ public class Model {
     @ColDefine(width = 255)
     private String titleIcon;
 
+    @Column("more_link")
+    @ColDefine(width = 255)
+    private String moreLink;
+
     /**
      * 状态 -1:被删除 1:上线 2:隐藏
      */

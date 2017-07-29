@@ -32,7 +32,7 @@ public class EditorServiceImpl implements EditorService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean createPage(PageRO pageRO) throws PageNameExistsException {
+    public Long createPage(PageRO pageRO) throws PageNameExistsException {
         boolean result = false;
 
         Page page = repository.fetch(Page.class, Cnd.where("name", "=", pageRO.getName()));
@@ -54,6 +54,10 @@ public class EditorServiceImpl implements EditorService {
                 if (modelRO.getTitleRO() != null) {
                     model.setTitleIcon(modelRO.getTitleRO().getTitleIcon());
                     model.setTitleStatus(modelRO.getTitleRO().getTitleStatus());
+                    model.setTitleStyle(modelRO.getTitleRO().getTitleStyle());
+                    model.setMainTitle(modelRO.getTitleRO().getMainTitle());
+                    model.setSubTitle(modelRO.getTitleRO().getSubTitle());
+                    model.setMoreLink(modelRO.getTitleRO().getMoreLink());
                 }
 
                 repository.insert(model);
@@ -69,7 +73,7 @@ public class EditorServiceImpl implements EditorService {
             });
         }
 
-        return result;
+        return page.getId() == null ? -1L : page.getId();
     }
 
     @Override

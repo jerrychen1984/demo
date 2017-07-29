@@ -30,15 +30,17 @@ public class PageOperateResultVO {
             , dataType = "string", example = "成功")
     private String message = "";
 
-    public static PageOperateResultVO success() {
-        return new PageOperateResultVO(SUCCESS, "创建成功");
+    private Long pageId;
+
+    public static PageOperateResultVO success(Long pageId) {
+        return new PageOperateResultVO(SUCCESS, "创建成功", pageId);
     }
 
     public static PageOperateResultVO error(Exception e) {
         if (e instanceof PageNameExistsException) {
-            return new PageOperateResultVO(PAGE_NAME_EXISTS, e.getMessage());
+            return new PageOperateResultVO(PAGE_NAME_EXISTS, e.getMessage(), -1L);
         } else {
-            return new PageOperateResultVO(KEY_UNKNOWN_ERROR, e.getMessage());
+            return new PageOperateResultVO(KEY_UNKNOWN_ERROR, e.getMessage(), -1L);
         }
     }
 }

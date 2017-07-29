@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface EditorService {
 
-    boolean createPage(PageRO pageRO) throws PageNameExistsException;
+    Long createPage(PageRO pageRO) throws PageNameExistsException;
 
     boolean updatePage(PageRO pageRO) throws PageNotExistsException;
 

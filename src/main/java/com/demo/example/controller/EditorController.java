@@ -35,13 +35,13 @@ public class EditorController {
             , produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public PageOperateResultVO createPage(@RequestBody PageRO pageRO) {
-        Boolean reulst = false;
+        Long pageId = -1L;
         try {
-            reulst = editorService.createPage(pageRO);
+            pageId = editorService.createPage(pageRO);
         } catch (PageNameExistsException e) {
             return PageOperateResultVO.error(e);
         }
-        return PageOperateResultVO.success();
+        return PageOperateResultVO.success(pageId);
     }
 
     @RequestMapping(value = "/updatePage"
@@ -49,7 +49,7 @@ public class EditorController {
             , produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public PageOperateResultVO updatePage(@RequestBody PageRO pageRO) {
-        return PageOperateResultVO.success();
+        return PageOperateResultVO.success(Long.parseLong(pageRO.getPageId()));
     }
 
     @RequestMapping(value = "/removePage"
@@ -63,7 +63,7 @@ public class EditorController {
             return PageOperateResultVO.error(e);
         }
 
-        return PageOperateResultVO.success();
+        return PageOperateResultVO.success(pageId);
     }
 
     @RequestMapping(value = "/getPageDetailById"
