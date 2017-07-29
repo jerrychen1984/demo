@@ -44,13 +44,14 @@ public class EditorServiceImpl implements EditorService {
         BeanUtils.copyProperties(pageRO, page);
 
         page = repository.insert(page);
-        result = page.getId() != null && page.getId() > 0;
+        final Long pageId = page.getId() == null ? -1L : page.getId();
 
-        if (result && !CollectionUtils.isEmpty(pageRO.getModelROs())) {
+        if (pageId > 0 && !CollectionUtils.isEmpty(pageRO.getModelROs())) {
             pageRO.getModelROs().forEach(modelRO -> {
                 Model model = new Model();
                 BeanUtils.copyProperties(modelRO, model);
 
+                model.setPageId(pageId);
                 if (modelRO.getTitleRO() != null) {
                     model.setTitleIcon(modelRO.getTitleRO().getTitleIcon());
                     model.setTitleStatus(modelRO.getTitleRO().getTitleStatus());
@@ -60,20 +61,23 @@ public class EditorServiceImpl implements EditorService {
                     model.setMoreLink(modelRO.getTitleRO().getMoreLink());
                 }
 
-                repository.insert(model);
+                model = repository.insert(model);
+                final Long modelId = model.getId() == null ? -1L : model.getId();
 
                 if (CollectionUtils.isEmpty(modelRO.getElementROs())) {
                     modelRO.getElementROs().forEach(elementRO -> {
                         Element element = new Element();
                         BeanUtils.copyProperties(elementRO, element);
 
+                        element.setPageId(pageId);
+                        element.setModelId(modelId);
                         repository.insert(element);
                     });
                 }
             });
         }
 
-        return page.getId() == null ? -1L : page.getId();
+        return pageId;
     }
 
     @Override
