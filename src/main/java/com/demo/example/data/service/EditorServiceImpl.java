@@ -64,7 +64,7 @@ public class EditorServiceImpl implements EditorService {
                 model = repository.insert(model);
                 final Long modelId = model.getId() == null ? -1L : model.getId();
 
-                if (modelId > 0 && CollectionUtils.isEmpty(modelRO.getElementROs())) {
+                if (modelId > 0 && !CollectionUtils.isEmpty(modelRO.getElementROs())) {
                     modelRO.getElementROs().forEach(elementRO -> {
                         Element element = new Element();
                         BeanUtils.copyProperties(elementRO, element);
