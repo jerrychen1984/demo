@@ -1,10 +1,7 @@
 package com.demo.example.data.po;
 
 import lombok.Data;
-import org.nutz.dao.entity.annotation.ColDefine;
-import org.nutz.dao.entity.annotation.Column;
-import org.nutz.dao.entity.annotation.Id;
-import org.nutz.dao.entity.annotation.Many;
+import org.nutz.dao.entity.annotation.*;
 
 import java.util.List;
 
@@ -15,6 +12,7 @@ import java.util.List;
  * @since 17/7/15
  */
 @Data
+@Table("t_models")
 public class Model {
 
     @Id
@@ -49,7 +47,7 @@ public class Model {
      * 主标题
      */
     @Column("main_title")
-    @ColDefine(width = 1000, notNull = true)
+    @ColDefine(width = 512, notNull = true)
     private String mainTitle;
 
     /**
@@ -67,25 +65,25 @@ public class Model {
     private String text;
 
     @Column("title_status")
-    @ColDefine(width = 1000, notNull = true)
+    @ColDefine(width = 255, notNull = true)
     private String titleStatus;
 
     @Column("title_icon")
-    @ColDefine(width = 1000, notNull = true)
+    @ColDefine(width = 255, notNull = true)
     private String titleIcon;
 
     /**
      * 状态 -1:被删除 1:上线 2:隐藏
      */
     @Column
-    private int status;
+    private Integer status = 0;
 
     /**
      * 排序字段
      */
-    @Column
-    private int order;
+    @Column("show_order")
+    private Integer showOrder = 0;
 
-    @Many(target = Element.class, field = "page_id")
+    @Many(target = Element.class, field = "modelId")
     private List<Element> elements;
 }

@@ -4,6 +4,7 @@ import lombok.Data;
 import org.nutz.dao.entity.annotation.ColDefine;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
+import org.nutz.dao.entity.annotation.Table;
 
 /**
  * ElementVO
@@ -12,6 +13,7 @@ import org.nutz.dao.entity.annotation.Id;
  * @since 17/7/15
  */
 @Data
+@Table("t_elements")
 public class Element {
 
     @Id
@@ -27,7 +29,7 @@ public class Element {
      * 图片地址
      */
     @Column
-    @ColDefine(width = 200, notNull = true)
+    @ColDefine(width = 255, notNull = true)
     private String pic;
 
     /**
@@ -46,14 +48,14 @@ public class Element {
      * 标题
      */
     @Column
-    @ColDefine(width = 1000, notNull = true)
+    @ColDefine(width = 512, notNull = true)
     private String title;
 
     /**
      * 跳转地址
      */
     @Column("jump_url")
-    @ColDefine(width = 200, notNull = true)
+    @ColDefine(width = 255, notNull = true)
     private String jumpUrl;
 
     /**
@@ -66,14 +68,14 @@ public class Element {
      * 价格文案
      */
     @Column("price_text")
-    @ColDefine(width = 200, notNull = true)
+    @ColDefine(width = 255, notNull = true)
     private String priceText;
 
     /**
      * 定位
      */
     @Column
-    @ColDefine(width = 200, notNull = true)
+    @ColDefine(width = 255, notNull = true)
     private String position;
 
     /**

@@ -12,7 +12,7 @@ import java.util.List;
  * @since 17/7/15
  */
 @Data
-@Table("t_page")
+@Table("t_pages")
 @TableIndexes(
         @Index(name = "idx_user", fields = {"userId"})
 )
@@ -54,6 +54,6 @@ public class Page {
     @ColDefine(width = 64)
     private String font;
 
-    @Many(target = Model.class, field = "id")
+    @Many(target = Model.class, field = "pageId")
     private List<Model> models;
 }
