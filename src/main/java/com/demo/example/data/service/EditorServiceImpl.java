@@ -86,7 +86,7 @@ public class EditorServiceImpl implements EditorService {
     public boolean updatePage(PageRO pageRO) throws PageNotExistsException {
         boolean result = false;
 
-        Page page = repository.fetch(Page.class, Cnd.where("id", "=", pageRO.getPageId()));
+        Page page = getPageById(Long.parseLong(pageRO.getPageId()));
         if (page == null) {
             throw new PageNotExistsException();
         }
@@ -125,7 +125,7 @@ public class EditorServiceImpl implements EditorService {
     public boolean deletePage(Long pageId) throws PageNotExistsException {
         boolean result = false;
 
-        Page page = repository.fetch(Page.class, Cnd.where("id", "=", pageId));
+        Page page = getPageById(pageId);
         if (page == null) {
             throw new PageNotExistsException();
         }
