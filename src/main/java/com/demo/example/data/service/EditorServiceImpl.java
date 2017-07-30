@@ -1,5 +1,6 @@
 package com.demo.example.data.service;
 
+import com.demo.example.controller.ro.editor.ModelRO;
 import com.demo.example.controller.ro.editor.PageRO;
 import com.demo.example.data.po.Element;
 import com.demo.example.data.po.Model;
@@ -81,37 +82,58 @@ public class EditorServiceImpl implements EditorService {
         return pageId;
     }
 
+    private Model transferModel(ModelRO modelRO, Long pageId) {
+        if (modelRO != null) {
+            Model model = new Model();
+            BeanUtils.copyProperties(modelRO, model);
+
+            model.setPageId(pageId);
+            if (modelRO.getTitleRO() != null) {
+                model.setTitleIcon(modelRO.getTitleRO().getTitleIcon());
+                model.setTitleStatus(modelRO.getTitleRO().getTitleStatus());
+                model.setTitleStyle(modelRO.getTitleRO().getTitleStyle());
+                model.setMainTitle(modelRO.getTitleRO().getMainTitle());
+                model.setSubTitle(modelRO.getTitleRO().getSubTitle());
+                model.setMoreLink(modelRO.getTitleRO().getMoreLink());
+            }
+            return model;
+        }
+        return null;
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean updatePage(PageRO pageRO) throws PageNotExistsException {
         boolean result = false;
 
-        Page page = getPageById(Long.parseLong(pageRO.getPageId()));
+        Page page = repository.fetch(Page.class, Cnd.where("id", "=", pageRO.getPageId()));
         if (page == null) {
             throw new PageNotExistsException();
         }
-
-        page = new Page();
         BeanUtils.copyProperties(pageRO, page);
 
         result = repository.update(page) > 0;
 
         final Long pageId = page.getId();
         if (result) {
-            if (!CollectionUtils.isEmpty(page.getModels())) {
-                page.getModels().forEach(model -> {
-                    model.setPageId(pageId);
+            if (!CollectionUtils.isEmpty(pageRO.getModelROs())) {
 
-                    model = repository.insertOrUpdate(model);
-                    final Long modelId = model.getId();
+                pageRO.getModelROs().forEach(modelRO -> {
+                    Model model = transferModel(modelRO, pageId);
+                    if (model != null) {
+                        model = repository.insertOrUpdate(model);
+                        final Long modelId = model.getId();
 
-                    if (!CollectionUtils.isEmpty(model.getElements())) {
-                        model.getElements().forEach(element -> {
-                            element.setPageId(pageId);
-                            element.setModelId(modelId);
+                        if (!CollectionUtils.isEmpty(modelRO.getElementROs())) {
+                            modelRO.getElementROs().forEach(elementRO -> {
+                                Element element = new Element();
+                                BeanUtils.copyProperties(elementRO, element);
 
-                            element = repository.insertOrUpdate(element);
-                        });
+                                element.setPageId(pageId);
+                                element.setModelId(modelId);
+                                element = repository.insertOrUpdate(element);
+                            });
+                        }
                     }
                 });
             }

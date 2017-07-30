@@ -105,6 +105,7 @@ public class EditorController {
                 PageVO pageVO = new PageVO();
 
                 BeanUtils.copyProperties(page, pageVO);
+                pageVO.setPageId(String.valueOf(page.getId()));
 
                 if (!CollectionUtils.isEmpty(page.getModels())) {
                     List<ModelVO> modelVOs = new ArrayList<>();
@@ -112,6 +113,8 @@ public class EditorController {
                     page.getModels().forEach(model -> {
                         ModelVO modelVO = new ModelVO();
                         BeanUtils.copyProperties(model, modelVO);
+
+                        modelVO.setModelId(String.valueOf(model.getId()));
 
                         ModelTitleVO modelTitleVO = new ModelTitleVO();
                         BeanUtils.copyProperties(model, modelTitleVO);
@@ -123,6 +126,8 @@ public class EditorController {
                             model.getElements().forEach(element -> {
                                 ElementVO elementVO = new ElementVO();
                                 BeanUtils.copyProperties(element, elementVO);
+
+                                elementVO.setElementId(String.valueOf(element.getId()));
 
                                 elementVOs.add(elementVO);
                             });

@@ -33,7 +33,7 @@ public class PageOperateResultVO {
     private Long pageId;
 
     public static PageOperateResultVO success(Long pageId) {
-        return new PageOperateResultVO(SUCCESS, "创建成功", pageId);
+        return new PageOperateResultVO(SUCCESS, "操作成功", pageId);
     }
 
     public static PageOperateResultVO error(Exception e) {
