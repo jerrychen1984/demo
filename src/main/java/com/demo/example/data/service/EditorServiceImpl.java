@@ -86,7 +86,7 @@ public class EditorServiceImpl implements EditorService {
     public boolean updatePage(PageRO pageRO) throws PageNotExistsException {
         boolean result = false;
 
-        Page page = repository.fetch(Page.class, Cnd.where("id", "=", pageRO.getPageId()));
+        Page page = getPageById(Long.parseLong(pageRO.getPageId()));
         if (page == null) {
             throw new PageNotExistsException();
         }
@@ -125,7 +125,7 @@ public class EditorServiceImpl implements EditorService {
     public boolean deletePage(Long pageId) throws PageNotExistsException {
         boolean result = false;
 
-        Page page = repository.fetch(Page.class, Cnd.where("id", "=", pageId));
+        Page page = getPageById(pageId);
         if (page == null) {
             throw new PageNotExistsException();
         }
@@ -135,17 +135,21 @@ public class EditorServiceImpl implements EditorService {
         result = repository.update(page) > 0;
 
         if (result) {
-            page.getModels().forEach(model -> {
-                model.setStatus(-1);
+            if (!CollectionUtils.isEmpty(page.getModels())) {
+                page.getModels().forEach(model -> {
+                    model.setStatus(-1);
 
-                repository.update(model);
+                    repository.update(model);
 
-                model.getElements().forEach(element -> {
-                    element.setStatus(-1);
+                    if (!CollectionUtils.isEmpty(model.getElements())) {
+                        model.getElements().forEach(element -> {
+                            element.setStatus(-1);
 
-                    repository.update(element);
+                            repository.update(element);
+                        });
+                    }
                 });
-            });
+            }
         }
 
         return result;
