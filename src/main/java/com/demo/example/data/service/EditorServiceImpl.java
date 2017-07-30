@@ -48,7 +48,16 @@ public class EditorServiceImpl implements EditorService {
         page = repository.insert(page);
         final Long pageId = page.getId() == null ? -1L : page.getId();
 
-        if (pageId > 0 && !CollectionUtils.isEmpty(pageRO.getModelROs())) {
+        if (pageId > 0) {
+            insertPageLinks(pageRO);
+        }
+
+        return pageId;
+    }
+
+    private void insertPageLinks(PageRO pageRO) {
+        final Long pageId = Long.parseLong(pageRO.getPageId());
+        if (!CollectionUtils.isEmpty(pageRO.getModelROs())) {
             pageRO.getModelROs().forEach(modelRO -> {
                 Model model = new Model();
                 BeanUtils.copyProperties(modelRO, model);
@@ -78,8 +87,6 @@ public class EditorServiceImpl implements EditorService {
                 }
             });
         }
-
-        return pageId;
     }
 
     private Model transferModel(ModelRO modelRO, Long pageId) {
@@ -117,28 +124,20 @@ public class EditorServiceImpl implements EditorService {
 
         final Long pageId = page.getId();
         if (result) {
-            if (!CollectionUtils.isEmpty(pageRO.getModelROs())) {
+            Page oldPage = getPageById(pageId);
+            if (!CollectionUtils.isEmpty(oldPage.getModels())) {
+                oldPage.getModels().forEach(model -> {
+                    repository.delete(model);
 
-                pageRO.getModelROs().forEach(modelRO -> {
-                    Model model = transferModel(modelRO, pageId);
-                    if (model != null) {
-                        model = repository.insertOrUpdate(model);
-                        final Long modelId = model.getId();
-
-                        if (!CollectionUtils.isEmpty(modelRO.getElementROs())) {
-                            modelRO.getElementROs().forEach(elementRO -> {
-                                Element element = new Element();
-                                BeanUtils.copyProperties(elementRO, element);
-
-                                element.setId(Long.parseLong(elementRO.getElementId()));
-                                element.setPageId(pageId);
-                                element.setModelId(modelId);
-                                element = repository.insertOrUpdate(element);
-                            });
-                        }
+                    if (!CollectionUtils.isEmpty(model.getElements())) {
+                        model.getElements().forEach(element -> {
+                            repository.delete(element);
+                        });
                     }
                 });
             }
+
+            insertPageLinks(pageRO);
         }
 
         return result;
@@ -197,10 +196,16 @@ public class EditorServiceImpl implements EditorService {
             return;
         }
         pages.forEach(page -> {
-            List<Model> models = repository.query(Model.class, Cnd.where("page_id", "=", page.getId()));
+            Cnd modelCnd = Cnd.where("page_id", "=", page.getId());
+            modelCnd.and("status", "!=", "-1");
+
+            List<Model> models = repository.query(Model.class, modelCnd);
             if (!CollectionUtils.isEmpty(models)) {
                 models.forEach(model -> {
-                    List<Element> elements = repository.query(Element.class, Cnd.where("model_id", "=", model.getId()));
+                    Cnd elementCnd = Cnd.where("model_id", "=", model.getId());
+                    elementCnd.and("status", "!=", "-1");
+
+                    List<Element> elements = repository.query(Element.class, elementCnd);
                     model.setElements(elements);
                 });
 
@@ -225,6 +230,9 @@ public class EditorServiceImpl implements EditorService {
 
     @Override
     public int countPageByUserId(Long userId) {
-        return repository.count(Page.class, Cnd.where("user_id", "=", userId));
+        Cnd cnd = Cnd.where("user_id", "=", userId);
+        cnd.and("status", "!=", "-1");
+
+        return repository.count(Page.class, cnd);
     }
 }
