@@ -135,17 +135,21 @@ public class EditorServiceImpl implements EditorService {
         result = repository.update(page) > 0;
 
         if (result) {
-            page.getModels().forEach(model -> {
-                model.setStatus(-1);
+            if (!CollectionUtils.isEmpty(page.getModels())) {
+                page.getModels().forEach(model -> {
+                    model.setStatus(-1);
 
-                repository.update(model);
+                    repository.update(model);
 
-                model.getElements().forEach(element -> {
-                    element.setStatus(-1);
+                    if (!CollectionUtils.isEmpty(model.getElements())) {
+                        model.getElements().forEach(element -> {
+                            element.setStatus(-1);
 
-                    repository.update(element);
+                            repository.update(element);
+                        });
+                    }
                 });
-            });
+            }
         }
 
         return result;
