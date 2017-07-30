@@ -186,7 +186,7 @@ public class EditorServiceImpl implements EditorService {
         Pager pager = repository.createPager(page, pageSize);
 
         Cnd cnd = Cnd.where("user_id", "=", userId);
-        cnd.and("status", "<>", "-1");
+        cnd.and("status", "!=", "-1");
 
         List<Page> pages = repository.query(Page.class, cnd, pager);
 

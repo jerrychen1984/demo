@@ -37,7 +37,7 @@ public class Page {
     /**
      * 创建人
      */
-    @Column
+    @Column("user_id")
     @ColDefine(width = 64, notNull = true)
     private String userId;
 
