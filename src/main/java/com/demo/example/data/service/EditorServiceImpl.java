@@ -87,6 +87,7 @@ public class EditorServiceImpl implements EditorService {
             Model model = new Model();
             BeanUtils.copyProperties(modelRO, model);
 
+            model.setId(Long.parseLong(modelRO.getModelId()));
             model.setPageId(pageId);
             if (modelRO.getTitleRO() != null) {
                 model.setTitleIcon(modelRO.getTitleRO().getTitleIcon());
@@ -129,6 +130,7 @@ public class EditorServiceImpl implements EditorService {
                                 Element element = new Element();
                                 BeanUtils.copyProperties(elementRO, element);
 
+                                element.setId(Long.parseLong(elementRO.getElementId()));
                                 element.setPageId(pageId);
                                 element.setModelId(modelId);
                                 element = repository.insertOrUpdate(element);
