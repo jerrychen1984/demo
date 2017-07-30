@@ -7,6 +7,7 @@ import com.demo.example.data.po.Page;
 import com.demo.example.data.repository.Repository;
 import com.demo.example.data.service.exception.PageNameExistsException;
 import com.demo.example.data.service.exception.PageNotExistsException;
+import com.google.common.collect.Lists;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.pager.Pager;
 import org.springframework.beans.BeanUtils;
@@ -83,7 +84,40 @@ public class EditorServiceImpl implements EditorService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean updatePage(PageRO pageRO) throws PageNotExistsException {
-        return false;
+        boolean result = false;
+
+        Page page = repository.fetch(Page.class, Cnd.where("id", "=", pageRO.getPageId()));
+        if (page == null) {
+            throw new PageNotExistsException();
+        }
+
+        page = new Page();
+        BeanUtils.copyProperties(pageRO, page);
+
+        result = repository.update(page) > 0;
+
+        final Long pageId = page.getId();
+        if (result) {
+            if (!CollectionUtils.isEmpty(page.getModels())) {
+                page.getModels().forEach(model -> {
+                    model.setPageId(pageId);
+
+                    model = repository.insertOrUpdate(model);
+                    final Long modelId = model.getId();
+
+                    if (!CollectionUtils.isEmpty(model.getElements())) {
+                        model.getElements().forEach(element -> {
+                            element.setPageId(pageId);
+                            element.setModelId(modelId);
+
+                            element = repository.insertOrUpdate(element);
+                        });
+                    }
+                });
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -100,8 +134,23 @@ public class EditorServiceImpl implements EditorService {
 
         result = repository.update(page) > 0;
 
+        if (result) {
+            page.getModels().forEach(model -> {
+                model.setStatus(-1);
+
+                repository.update(model);
+
+                model.getElements().forEach(element -> {
+                    element.setStatus(-1);
+
+                    repository.update(element);
+                });
+            });
+        }
+
         return result;
     }
+
 
     @Override
     public Page getPageById(Long pageId) throws PageNotExistsException {
@@ -110,14 +159,38 @@ public class EditorServiceImpl implements EditorService {
             throw new PageNotExistsException();
         }
 
+        fillPageLink(Lists.newArrayList(page));
+
         return page;
+    }
+
+    private void fillPageLink(List<Page> pages) {
+        if (CollectionUtils.isEmpty(pages)) {
+            return;
+        }
+        pages.forEach(page -> {
+            List<Model> models = repository.query(Model.class, Cnd.where("page_id", "=", page.getId()));
+            if (!CollectionUtils.isEmpty(models)) {
+                models.forEach(model -> {
+                    List<Element> elements = repository.query(Element.class, Cnd.where("model_id", "=", model.getId()));
+                    model.setElements(elements);
+                });
+
+                page.setModels(models);
+            }
+        });
     }
 
     @Override
     public List<Page> listPageByUserId(Long userId, int page, int pageSize) {
         Pager pager = repository.createPager(page, pageSize);
 
-        List<Page> pages = repository.query(Page.class, Cnd.where("user_id", "=", userId), pager);
+        Cnd cnd = Cnd.where("user_id", "=", userId);
+        cnd.and("status", "<>", "-1");
+
+        List<Page> pages = repository.query(Page.class, cnd, pager);
+
+        fillPageLink(pages);
 
         return pages;
     }

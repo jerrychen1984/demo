@@ -18,8 +18,7 @@ import java.util.List;
 )
 public class Page {
 
-    @Column("pageId")
-    @Id()
+    @Id
     private Long id;
 
     /**
