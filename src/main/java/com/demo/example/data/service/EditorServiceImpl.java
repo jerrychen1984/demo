@@ -49,6 +49,7 @@ public class EditorServiceImpl implements EditorService {
         final Long pageId = page.getId() == null ? -1L : page.getId();
 
         if (pageId > 0) {
+            pageRO.setPageId(String.valueOf(pageId));
             insertPageLinks(pageRO);
         }
 
