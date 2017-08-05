@@ -11,6 +11,7 @@ import com.demo.example.data.repository.Repository;
 import com.demo.example.data.service.AuthService;
 import com.demo.example.data.service.EmailService;
 import com.demo.example.utils.CryptoUtils;
+import com.demo.example.manager.FeesetManager;
 import com.demo.example.utils.JSONUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.swagger.annotations.Api;
@@ -42,6 +43,8 @@ public class UserController {
     private EmailService emailService;
     @Value("${email.verify.url}")
     private String emailVerifyUrl;
+    @Autowired
+    private FeesetManager feesetManager;
 
 
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -67,6 +70,9 @@ public class UserController {
             userInfo.setEmail(user.getUsername());
             userInfo.setEmailVerified(user.isEmailVerified());
             userInfo.setDisplayName(user.getDisplayName());
+
+            feesetManager.initFreeFeeSet(user.getId());
+
             return ResponseEntity.ok(userInfo);
         }
 

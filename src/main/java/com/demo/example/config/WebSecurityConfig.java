@@ -66,6 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/register"
                         , "/user/verify-email"
                         , "/user/resend-verify-email").permitAll()
+                .antMatchers("/feeset/list").permitAll()
                 .antMatchers("/editor/**").permitAll()
                 .anyRequest().authenticated();
 

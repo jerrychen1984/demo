@@ -32,7 +32,7 @@ public class Page {
      * 页面状态 -1:被删除 1:保存未提交 2:提交
      */
     @Column
-    private int status;
+    private Integer status = 0;
 
     /**
      * 创建人
