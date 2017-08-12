@@ -40,5 +40,5 @@ public class ModelRO {
     private List<ElementRO> elementROs;
 
     @ApiModelProperty(value = "排序字段")
-    private String order;
+    private String order = "0";
 }

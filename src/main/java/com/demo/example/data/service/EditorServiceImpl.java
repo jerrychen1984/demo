@@ -87,7 +87,7 @@ public class EditorServiceImpl implements EditorService {
                         BeanUtils.copyProperties(elementRO, element);
 
                         element.setHeight(Integer.parseInt(elementRO.getHeight()));
-                        element.setPrice(Long.parseLong(elementRO.getPic()));
+                        element.setPrice(Long.parseLong(elementRO.getPrice()));
                         element.setWidth(Integer.parseInt(elementRO.getWidth()));
                         element.setStatus(1);
                         element.setPageId(pageId);
@@ -208,6 +208,7 @@ public class EditorServiceImpl implements EditorService {
         pages.forEach(page -> {
             Cnd modelCnd = Cnd.where("page_id", "=", page.getId());
             modelCnd.and("status", "!=", "-1");
+            modelCnd.orderBy("show_order", "asc");
 
             List<Model> models = repository.query(Model.class, modelCnd);
             if (!CollectionUtils.isEmpty(models)) {
