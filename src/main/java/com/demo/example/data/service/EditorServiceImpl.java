@@ -45,6 +45,8 @@ public class EditorServiceImpl implements EditorService {
         page = new Page();
         BeanUtils.copyProperties(pageRO, page);
 
+        page.setStatus(Integer.parseInt(pageRO.getStatus()));
+
         page = repository.insert(page);
         final Long pageId = page.getId() == null ? -1L : page.getId();
 
