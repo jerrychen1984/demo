@@ -34,7 +34,7 @@ public class ModelRO {
     private String text;
 
     @ApiModelProperty(value = "状态 1:上线 2:隐藏")
-    private String status;
+    private String status = "1";
 
     @ApiModelProperty(value = "元素集合")
     private List<ElementRO> elementROs;

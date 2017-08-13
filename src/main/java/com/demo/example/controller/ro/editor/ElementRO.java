@@ -21,10 +21,10 @@ public class ElementRO {
     private String pic;
 
     @ApiModelProperty(value = "图片高")
-    private String height;
+    private String height = "0";
 
     @ApiModelProperty(value = "图片宽")
-    private String width;
+    private String width = "0";
 
     @ApiModelProperty(value = "标题", example = "")
     private String title;
@@ -33,7 +33,7 @@ public class ElementRO {
     private String jumpUrl;
 
     @ApiModelProperty(value = "价格")
-    private String price;
+    private String price = "0";
 
     @ApiModelProperty(value = "价格文案")
     private String priceText;
