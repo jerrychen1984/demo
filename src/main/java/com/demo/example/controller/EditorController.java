@@ -119,6 +119,7 @@ public class EditorController {
                         ModelTitleVO modelTitleVO = new ModelTitleVO();
                         BeanUtils.copyProperties(model, modelTitleVO);
                         modelVO.setModelTitleVO(modelTitleVO);
+                        modelVO.setOrder(model.getShowOrder());
 
                         if (!CollectionUtils.isEmpty(model.getElements())) {
                             List<ElementVO> elementVOs = new ArrayList<>();
@@ -127,6 +128,7 @@ public class EditorController {
                                 ElementVO elementVO = new ElementVO();
                                 BeanUtils.copyProperties(element, elementVO);
 
+                                elementVO.setSubTitle(element.getSubTitle());
                                 elementVO.setElementId(String.valueOf(element.getId()));
 
                                 elementVOs.add(elementVO);

@@ -52,6 +52,13 @@ public class Element {
     private String title;
 
     /**
+     * 副标题
+     */
+    @Column("sub_title")
+    @ColDefine(width = 512)
+    private String subTitle;
+
+    /**
      * 跳转地址
      */
     @Column("jump_url")

@@ -29,6 +29,9 @@ public class ElementVO {
     @ApiModelProperty(value = "标题")
     private String title;
 
+    @ApiModelProperty(value = "副标题")
+    private String subTitle;
+
     @ApiModelProperty(value = "跳转地址")
     private String jumpUrl;
 

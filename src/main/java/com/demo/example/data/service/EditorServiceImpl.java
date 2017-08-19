@@ -86,6 +86,7 @@ public class EditorServiceImpl implements EditorService {
                         Element element = new Element();
                         BeanUtils.copyProperties(elementRO, element);
 
+                        element.setSubTitle(elementRO.getSubTitle());
                         element.setHeight(Integer.parseInt(elementRO.getHeight()));
                         element.setPrice(Long.parseLong(elementRO.getPrice()));
                         element.setWidth(Integer.parseInt(elementRO.getWidth()));
