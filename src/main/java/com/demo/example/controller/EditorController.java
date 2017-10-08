@@ -130,6 +130,7 @@ public class EditorController {
 
                                 elementVO.setSubTitle(element.getSubTitle());
                                 elementVO.setElementId(String.valueOf(element.getId()));
+                                elementVO.setOrder(element.getShowOrder());
 
                                 elementVOs.add(elementVO);
                             });

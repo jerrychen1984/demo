@@ -43,4 +43,7 @@ public class ElementVO {
 
     @ApiModelProperty(value = "定位")
     private String position;
+
+    @ApiModelProperty(value = "排序字段")
+    private int order;
 }

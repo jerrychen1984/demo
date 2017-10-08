@@ -93,6 +93,7 @@ public class EditorServiceImpl implements EditorService {
                         element.setStatus(1);
                         element.setPageId(pageId);
                         element.setModelId(modelId);
+                        element.setShowOrder(Integer.parseInt(elementRO.getOrder()));
                         repository.insert(element);
                     });
                 }
@@ -216,6 +217,7 @@ public class EditorServiceImpl implements EditorService {
                 models.forEach(model -> {
                     Cnd elementCnd = Cnd.where("model_id", "=", model.getId());
                     elementCnd.and("status", "!=", "-1");
+                    elementCnd.orderBy("show_order", "asc");
 
                     List<Element> elements = repository.query(Element.class, elementCnd);
                     model.setElements(elements);

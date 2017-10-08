@@ -90,4 +90,10 @@ public class Element {
      */
     @Column
     private int status;
+
+    /**
+     * 排序字段
+     */
+    @Column("show_order")
+    private Integer showOrder = 0;
 }
