@@ -1,6 +1,7 @@
 package com.demo.example.controller.vo.editor;
 
 import com.demo.example.data.service.exception.PageNameExistsException;
+import com.demo.example.utils.UrlUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -32,15 +33,17 @@ public class PageOperateResultVO {
 
     private Long pageId;
 
+    private String pageCode;
+
     public static PageOperateResultVO success(Long pageId) {
-        return new PageOperateResultVO(SUCCESS, "操作成功", pageId);
+        return new PageOperateResultVO(SUCCESS, "操作成功", pageId, UrlUtils.encryption(pageId));
     }
 
     public static PageOperateResultVO error(Exception e) {
         if (e instanceof PageNameExistsException) {
-            return new PageOperateResultVO(PAGE_NAME_EXISTS, e.getMessage(), -1L);
+            return new PageOperateResultVO(PAGE_NAME_EXISTS, e.getMessage(), -1L, "");
         } else {
-            return new PageOperateResultVO(KEY_UNKNOWN_ERROR, e.getMessage(), -1L);
+            return new PageOperateResultVO(KEY_UNKNOWN_ERROR, e.getMessage(), -1L, "");
         }
     }
 }

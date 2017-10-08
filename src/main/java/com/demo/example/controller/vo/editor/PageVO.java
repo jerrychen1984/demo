@@ -19,6 +19,9 @@ public class PageVO {
     @ApiModelProperty(value = "页面id")
     private String pageId;
 
+    @ApiModelProperty(value = "页面id 加码")
+    private String pageCode;
+
     @ApiModelProperty(value = "页面名称")
     private String name;
 

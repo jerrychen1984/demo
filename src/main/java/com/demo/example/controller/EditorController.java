@@ -6,8 +6,10 @@ import com.demo.example.data.po.Page;
 import com.demo.example.data.service.EditorService;
 import com.demo.example.data.service.exception.PageNameExistsException;
 import com.demo.example.data.service.exception.PageNotExistsException;
+import com.demo.example.manager.EditorManager;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -30,6 +32,8 @@ public class EditorController {
 
     @Resource
     private EditorService editorService;
+    @Resource
+    private EditorManager editorManager;
 
     @RequestMapping(value = "/createPage"
             , method = RequestMethod.POST
@@ -51,6 +55,9 @@ public class EditorController {
     @ResponseBody
     public PageOperateResultVO updatePage(@RequestBody PageRO pageRO) {
         try {
+            if (StringUtils.isNotEmpty(pageRO.getPageCode())) {
+                pageRO.setPageId(String.valueOf(editorManager.decrypt(pageRO.getPageCode())));
+            }
             boolean result = editorService.updatePage(pageRO);
             if (result) {
                 return PageOperateResultVO.success(Long.parseLong(pageRO.getPageId()));
@@ -67,8 +74,13 @@ public class EditorController {
             , method = RequestMethod.POST
             , produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public PageOperateResultVO removePage(@RequestParam("pageId") Long pageId) {
+    public PageOperateResultVO removePage(@RequestParam("pageId") Long pageId,
+                                          @RequestParam("pageCode") String pageCode) {
         try {
+            if (StringUtils.isNotEmpty(pageCode)) {
+                pageId = editorManager.decrypt(pageCode);
+            }
+
             editorService.deletePage(pageId);
         } catch (PageNotExistsException e) {
             return PageOperateResultVO.error(e);
@@ -81,8 +93,13 @@ public class EditorController {
             , method = RequestMethod.GET
             , produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public ResponseEntity<?> getPageDetailById(@RequestParam("pageId") Long pageId) {
+    public ResponseEntity<?> getPageDetailById(@RequestParam("pageId") Long pageId,
+                                               @RequestParam("pageCode") String pageCode) {
         try {
+            if (StringUtils.isNotEmpty(pageCode)) {
+                pageId = editorManager.decrypt(pageCode);
+            }
+
             Page page = editorService.getPageById(pageId);
 
             List<PageVO> pageVOs = transferPageVO(Lists.newArrayList(page));
@@ -106,6 +123,7 @@ public class EditorController {
 
                 BeanUtils.copyProperties(page, pageVO);
                 pageVO.setPageId(String.valueOf(page.getId()));
+                pageVO.setPageCode(editorManager.encryption(page.getId()));
 
                 if (!CollectionUtils.isEmpty(page.getModels())) {
                     List<ModelVO> modelVOs = new ArrayList<>();
